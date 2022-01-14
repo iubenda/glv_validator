@@ -1,0 +1,53 @@
+body {
+  background: #F4F4F4;
+  color: #333;
+}
+
+.container {
+  padding: 3rem;
+  background: white;
+  border-radius: 0.5rem;
+  border-top: 10px solid #1CC691;
+  margin: 3rem auto;
+  max-width: 992px;
+}
+
+h1 {
+  margin-bottom: 2rem;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul li {
+  border-left: 1px solid #CCC;
+  padding: 0 1rem;
+  margin: 1.5rem 0;
+}
+
+ul li i {
+  font-weight: bold;
+}
+
+a,
+a:hover,
+a:active {
+  text-decoration: none;
+  color: #1CC691;
+  word-break: break-all;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 992px) {
+  .container {
+    padding: 1.5rem;
+    margin: 3rem 1rem;
+    width: auto;
+  }
+}
