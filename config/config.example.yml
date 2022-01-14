@@ -1,0 +1,5 @@
+telegram:
+  app_name: gvl_validator
+  token: 000000000:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  user: 000000000
+  enabled: true
