@@ -9,6 +9,14 @@ class Validator
   LATEST_URL  = 'https://vendor-list.consensu.org/v2/vendor-list.json'
   ARCHIVE_URL = 'https://vendor-list.consensu.org/v2/archives/vendor-list-v%<version>d.json'
 
+  REQUIRED_COOKIE_KEYS = %w[identifier type maxAgeSeconds].freeze
+  COOKIE_SCHEMA = {
+    identifier:    [String],
+    type:          [String],
+    maxAgeSeconds: [Integer, NilClass],
+    domain:        [String, NilClass]
+  }.freeze
+
   def initialize(version = nil)
     @version = version
   end
@@ -54,7 +62,16 @@ class Validator
 
   def validate_disclosures(disclosures)
     @errors = disclosures.each_with_object([]) do |(_k, v), memo|
-      fetch_disclosure(v['deviceStorageDisclosureUrl'])
+      list = fetch_disclosure(v['deviceStorageDisclosureUrl'])
+
+      cookies = list['disclosures']
+      raise JSON::ParserError, 'Invalid cookie schema' if cookies.nil?
+
+      cookies.each do |cookie|
+        unless valid_cookie?(cookie)
+          raise JSON::ParserError, 'Invalid cookie schema'
+        end
+      end
     rescue Faraday::Error, JSON::ParserError => e
       memo << { 'vendor' => v, 'error' => e.message }
       next
@@ -62,6 +79,12 @@ class Validator
 
     @success = true if @success.nil?
     @last_check = Time.now
+  end
+
+  def valid_cookie?(cookie)
+    return false unless (REQUIRED_COOKIE_KEYS - cookie.keys).empty?
+
+    COOKIE_SCHEMA.all? { |key, types| types.include?(cookie[key.to_s].class) }
   end
 
   def to_h
