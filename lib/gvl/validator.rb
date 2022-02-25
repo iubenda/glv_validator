@@ -58,6 +58,8 @@ class Validator
     end
 
     JSON.parse(response.body)
+  rescue JSON::ParserError
+    raise JSON::ParserError, 'Invalid JSON'
   end
 
   def validate_disclosures(disclosures)
