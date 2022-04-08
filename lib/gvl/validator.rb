@@ -77,6 +77,9 @@ class Validator
     rescue Faraday::Error, JSON::ParserError => e
       memo << { 'vendor' => v, 'error' => e.message }
       next
+    rescue URI::InvalidURIError => e
+      memo << { 'vendor' => v, 'error' => 'Invalid URL' }
+      next
     end
 
     @success = true if @success.nil?
