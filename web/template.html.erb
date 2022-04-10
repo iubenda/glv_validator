@@ -20,6 +20,7 @@
       <p>vendorlist version: <%= version %></p>
       <p>vendorlist url: <a href="<%= url %>"><%= url %></a></p>
       <p>vendorlist status: <%= errors.empty? ? 'ok' : 'broken' %></p>
+      <p>error count: <%= errors.size %></p>
       <p>last check: <%= last_check.strftime('%Y-%m-%d %H:%M:%S %z') %></p>
       <br>
 
