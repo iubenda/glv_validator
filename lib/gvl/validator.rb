@@ -65,6 +65,7 @@ class Validator
   def validate_disclosures(disclosures)
     @errors = disclosures.each_with_object([]) do |(_k, v), memo|
       list = fetch_disclosure(v['deviceStorageDisclosureUrl'])
+      raise JSON::ParserError, 'Invalid cookie schema' unless list.is_a?(Hash) && list.key?('disclosures')
 
       cookies = list['disclosures']
       raise JSON::ParserError, 'Invalid cookie schema' if cookies.nil?
