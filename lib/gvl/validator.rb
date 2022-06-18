@@ -57,7 +57,13 @@ class Validator
       raise Faraday::Error, "Connection failed: #{response.status} #{response.reason_phrase}"
     end
 
-    JSON.parse(response.body)
+    content = JSON.parse(response.body)
+
+    if response.headers['access-control-allow-origin'] != '*'
+      raise Faraday::Error, 'Invalid CORS response'
+    end
+
+    content
   rescue JSON::ParserError
     raise JSON::ParserError, 'Invalid JSON'
   end
