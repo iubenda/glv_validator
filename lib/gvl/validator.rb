@@ -86,8 +86,11 @@ class Validator
     rescue Faraday::Error, JSON::ParserError => e
       memo << { 'vendor' => v, 'error' => e.message }
       next
-    rescue URI::InvalidURIError => e
+    rescue URI::InvalidURIError
       memo << { 'vendor' => v, 'error' => 'Invalid URL' }
+      next
+    rescue Zlib::Error
+      memo << { 'vendor' => v, 'error' => 'Invalid Zlib compression' }
       next
     end
 
